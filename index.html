@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Career Copilot — Interactive Landing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#f5f2ed;--surface:#fff;--s2:#f7f4ef;--s3:#ede9e2;--border:#e3ddd5;--border2:#cfc8bd;
+      --text:#1a1714;--mid:#59524a;--dim:#a39b91;--faint:#d0c9bf;
+      --teal:#0f766e;--teal-lt:#f0fdfb;--teal-md:#99f6e4;--teal-dk:#0d5f58;
+      --blue:#0369a1;--orange:#c2410c;--amber:#b45309;--rose:#be185d;--green:#15803d;--gold:#ca8a04;--red:#dc2626;
+      --sh-sm:0 1px 3px rgba(26,23,20,.07),0 1px 2px rgba(26,23,20,.04);
+      --sh-md:0 4px 16px rgba(26,23,20,.09),0 1px 4px rgba(26,23,20,.05);
+      --sh-lg:0 16px 48px rgba(26,23,20,.13),0 4px 12px rgba(26,23,20,.07);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text)}
+    .top{position:sticky;top:0;z-index:20;background:rgba(245,242,237,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+    .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .mark{width:32px;height:32px;border-radius:10px;background:var(--teal);display:grid;place-items:center;color:#fff;font-weight:700}
+    .name{font-family:'Fraunces',serif;font-size:20px;color:var(--teal);font-weight:700}
+    .menu{display:flex;gap:8px;align-items:center}
+    .menu button{border:1px solid var(--border);background:var(--surface);padding:8px 12px;border-radius:9px;color:var(--mid);cursor:pointer}
+    .menu button:hover{box-shadow:var(--sh-sm);color:var(--text)}
+    .cta{background:var(--teal)!important;border-color:var(--teal)!important;color:white!important}
+
+    .hero{padding:64px 0 32px}
+    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:stretch}
+    .hero-card,.panel{background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:var(--sh-sm)}
+    .hero-card{padding:34px}
+    h1{font-family:'Fraunces',serif;font-size:50px;line-height:1.05;letter-spacing:-.02em;margin-bottom:14px}
+    .accent{color:var(--teal)}
+    .sub{color:var(--mid);font-size:18px;line-height:1.55;max-width:56ch}
+    .hero-actions{display:flex;gap:10px;margin:22px 0 18px;flex-wrap:wrap}
+    .btn{padding:11px 16px;border-radius:10px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-weight:600}
+    .btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+    .btn:hover{box-shadow:var(--sh-md)}
+    .trust{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{padding:6px 10px;border-radius:999px;background:var(--s2);border:1px solid var(--border);font-size:12px;color:var(--mid)}
+
+    .panel{padding:20px;display:flex;flex-direction:column;gap:12px}
+    .kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .stat{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:11px}
+    .stat .n{font-family:'Fraunces',serif;font-size:30px}
+    .stat .l{font-size:12px;color:var(--dim)}
+    .pulse{height:8px;border-radius:99px;background:var(--s3);overflow:hidden}
+    .pulse i{display:block;height:100%;width:62%;background:linear-gradient(90deg,var(--teal),#2dd4bf);animation:grow 3s infinite alternate}
+    @keyframes grow{from{width:58%}to{width:85%}}
+
+    .section{padding:20px 0 10px}
+    .section h2{font-family:'Fraunces',serif;font-size:32px;margin-bottom:8px}
+    .section p{color:var(--mid)}
+
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+    .feature{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--sh-sm);cursor:pointer;transition:.18s}
+    .feature:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}
+    .feature h3{font-size:17px;margin-bottom:6px}
+    .feature p{font-size:13px;color:var(--mid)}
+
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+    .tabs button{padding:8px 12px;border-radius:9px;border:1px solid var(--border);background:var(--surface);cursor:pointer}
+    .tabs button.active{background:var(--teal-lt);border-color:var(--teal-md);color:var(--teal);font-weight:600}
+    .tab-panels .card{display:none;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .tab-panels .card.active{display:block}
+
+    .testimonial{margin-top:16px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;justify-content:space-between;gap:18px;align-items:center}
+    blockquote{font-family:'Fraunces',serif;font-size:20px;line-height:1.35}
+    .meta{color:var(--dim);font-size:13px;margin-top:8px}
+
+    .faq{margin-top:14px}
+    details{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+    summary{cursor:pointer;font-weight:600}
+    details p{margin-top:8px;color:var(--mid);font-size:14px}
+
+    .foot{padding:36px 0 48px;color:var(--dim);font-size:13px}
+
+    .modal{position:fixed;inset:0;background:rgba(245,242,237,.84);backdrop-filter:blur(6px);display:none;place-items:center;z-index:99}
+    .modal.open{display:grid}
+    .modal-box{width:min(560px,92vw);background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--sh-lg);padding:22px}
+    .modal h3{font-family:'Fraunces',serif;font-size:26px;margin-bottom:8px}
+    .modal input{width:100%;margin:8px 0;padding:10px 12px;border:1px solid var(--border);border-radius:9px;font:inherit}
+    .modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}
+
+    @media (max-width: 960px){
+      h1{font-size:38px}
+      .hero-grid,.grid3,.kpi{grid-template-columns:1fr}
+      .menu{display:none}
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap nav">
+      <div class="brand"><div class="mark">✦</div><div class="name">Copilot</div></div>
+      <nav class="menu">
+        <button data-scroll="#features">Features</button>
+        <button data-scroll="#how">How it works</button>
+        <button data-scroll="#faq">FAQ</button>
+        <button class="cta" id="startBtn">Start free</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-grid">
+        <article class="hero-card">
+          <h1>Your <span class="accent">AI career map</span> that updates as you grow.</h1>
+          <p class="sub">Keep the same clean copilot look — now with live insights, role simulations, and interactive planning to move from uncertainty to action in minutes.</p>
+          <div class="hero-actions">
+            <button class="btn primary" id="heroStart">Create my map</button>
+            <button class="btn" data-scroll="#how">See demo flow</button>
+          </div>
+          <div class="trust">
+            <span class="chip">Live skill-gap tracking</span>
+            <span class="chip">Interactive role compare</span>
+            <span class="chip">Weekly action planner</span>
+          </div>
+        </article>
+
+        <aside class="panel">
+          <strong style="font-size:13px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em">Live readiness</strong>
+          <div class="kpi">
+            <div class="stat"><div class="n" data-target="87">0</div><div class="l">Data Analyst</div></div>
+            <div class="stat"><div class="n" data-target="74">0</div><div class="l">Product</div></div>
+            <div class="stat"><div class="n" data-target="68">0</div><div class="l">Business Ops</div></div>
+          </div>
+          <div class="pulse" title="Momentum this week"><i></i></div>
+          <p style="font-size:13px;color:var(--mid)">Tip: upload one project this week to unlock 2–3 high-fit opportunities.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <h2>Interactive blocks that guide decisions</h2>
+      <p>Click a feature card to instantly preview the expected impact on your readiness.</p>
+      <div class="grid3">
+        <div class="feature" data-impact="+6%" data-copy="Map refreshes instantly after each upload.">
+          <h3>Smart Evidence Parsing</h3><p>Upload resume, transcript, certificates, and projects.</p>
+        </div>
+        <div class="feature" data-impact="+4%" data-copy="Weekly plans rebalance based on deadlines and progress.">
+          <h3>Adaptive Roadmaps</h3><p>Action recommendations adapt to your available time.</p>
+        </div>
+        <div class="feature" data-impact="+8%" data-copy="Interactive prep checklists for role-specific interviews.">
+          <h3>Role Simulations</h3><p>Practice scenarios for analytics, PM, and consulting tracks.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" class="section">
+      <h2>Try the flow</h2>
+      <p>Switch tabs to explore a step-by-step onboarding preview.</p>
+      <div class="tabs">
+        <button class="active" data-tab="t1">1. Import</button>
+        <button data-tab="t2">2. Analyze</button>
+        <button data-tab="t3">3. Plan</button>
+      </div>
+      <div class="tab-panels">
+        <div class="card active" id="t1">Drop files and links. Copilot tags skills, projects, and evidence quality in seconds.</div>
+        <div class="card" id="t2">AI scores role fit and highlights blocked branches with exact missing skills.</div>
+        <div class="card" id="t3">Get a weekly checklist with due dates, effort estimates, and readiness impact.</div>
+      </div>
+
+      <div class="testimonial" id="quoteBox">
+        <div>
+          <blockquote>“I finally knew what to do each week instead of guessing.”</blockquote>
+          <div class="meta">Maya R. · UCLA · Landed data internship in 11 weeks</div>
+        </div>
+        <button class="btn" id="nextQuote">Next story →</button>
+      </div>
+    </section>
+
+    <section id="faq" class="section faq">
+      <h2>FAQ</h2>
+      <details open><summary>Is this just another static dashboard?</summary><p>No. Recommendations update as soon as you add evidence or complete actions.</p></details>
+      <details><summary>Can I compare multiple career paths?</summary><p>Yes — compare fit, skill gaps, timeline, and expected outcomes side-by-side.</p></details>
+      <details><summary>How much time do I need each week?</summary><p>Most users start with 3–6 hours/week and let the planner auto-prioritize.</p></details>
+    </section>
+
+    <footer class="foot">© 2026 Career Copilot · Designed for clarity, now with richer interactions.</footer>
+  </main>
+
+  <div class="modal" id="modal">
+    <div class="modal-box">
+      <h3>Start your map</h3>
+      <p style="color:var(--mid);margin-bottom:8px">Enter a few details and get your first interactive roadmap.</p>
+      <input placeholder="Full name" />
+      <input placeholder="School / role target" />
+      <div class="modal-actions">
+        <button class="btn" id="closeModal">Cancel</button>
+        <button class="btn primary">Generate roadmap</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('modal');
+    document.getElementById('startBtn').onclick = () => modal.classList.add('open');
+    document.getElementById('heroStart').onclick = () => modal.classList.add('open');
+    document.getElementById('closeModal').onclick = () => modal.classList.remove('open');
+    modal.addEventListener('click', (e) => e.target === modal && modal.classList.remove('open'));
+
+    document.querySelectorAll('[data-scroll]').forEach(btn => {
+      btn.onclick = () => document.querySelector(btn.dataset.scroll)?.scrollIntoView({ behavior:'smooth' });
+    });
+
+    const counters = document.querySelectorAll('[data-target]');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = Number(el.dataset.target);
+        let n = 0;
+        const timer = setInterval(() => {
+          n += Math.ceil(target / 20);
+          if (n >= target) { n = target; clearInterval(timer); }
+          el.textContent = n + '%';
+        }, 35);
+        observer.unobserve(el);
+      });
+    }, { threshold: 0.6 });
+    counters.forEach(c => observer.observe(c));
+
+    const features = document.querySelectorAll('.feature');
+    const quote = document.querySelector('#quoteBox blockquote');
+    const meta = document.querySelector('#quoteBox .meta');
+    features.forEach(card => card.onclick = () => {
+      quote.textContent = `${card.dataset.impact} projected readiness from this action.`;
+      meta.textContent = card.dataset.copy;
+    });
+
+    const tabs = document.querySelectorAll('.tabs button');
+    const panels = document.querySelectorAll('.tab-panels .card');
+    tabs.forEach(t => t.onclick = () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById(t.dataset.tab).classList.add('active');
+    });
+
+    const stories = [
+      ['“I finally knew what to do each week instead of guessing.”','Maya R. · UCLA · Landed data internship in 11 weeks'],
+      ['“The path compare view helped me choose analytics over PM.”','Jordan T. · UT Austin · Improved interview callbacks 2x'],
+      ['“Uploading one project changed my top role recommendations overnight.”','Nia P. · USC · Unlocked 3 new internship tracks']
+    ];
+    let i = 0;
+    document.getElementById('nextQuote').onclick = () => {
+      i = (i + 1) % stories.length;
+      quote.textContent = stories[i][0];
+      meta.textContent = stories[i][1];
+    };
+  </script>
+</body>
+</html>
